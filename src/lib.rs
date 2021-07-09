@@ -1,7 +1,7 @@
 #![feature(option_result_contains)]
 
 mod builder;
-pub use builder::generate_get_days;
+pub use builder::{generate_get_days, generate_get_inputs};
 
 mod project;
 pub use project::AoCProject;
@@ -19,12 +19,8 @@ pub mod math;
 mod error;
 pub use error::ErrorWrapper;
 
-pub trait AoCDay {
-    fn day(&self) -> usize;
-    fn part1(&self) -> Result<String, ErrorWrapper>;
-    fn part2(&self) -> Result<String, ErrorWrapper>;
-    fn expected(&self) -> (Option<&'static str>, Option<&'static str>);
-}
+mod day;
+pub use day::AoCDay;
 
 // Useful for output
 pub fn block_char() -> char {

@@ -1,4 +1,5 @@
 use crate::AoCDay;
+use std::collections::HashMap;
 //use clap::{clap_app, App, Arg, SubCommand};
 use clap::{clap_app, AppSettings};
 
@@ -26,7 +27,7 @@ impl AoCProject {
             url,
         }
     }
-    pub fn run(&self, days: &[Box<dyn AoCDay>]) {
+    pub fn run<S>(&self, days: &[Box<dyn AoCDay>], inputs: &HashMap<usize, S>) where S: AsRef<str> + std::fmt::Display {
         let matches = clap_app!(aoc_core =>
             (version: self.version.as_str())
             (author: self.author.as_str())
@@ -40,6 +41,8 @@ impl AoCProject {
                 (about: "executes requested solution(s)")
                 (@arg day: --day -d +takes_value "indicate a specific day")
                 (@arg part: --part -p +takes_value #{1,2} "indicate a specific part")
+                // TODO: (@arg stdin: --stdin -i "flag for providing input over stdin")
+                (@arg input_file: --("input-file") -f +takes_value "location of an input file")
             )
         )
         .get_matches();
@@ -82,15 +85,33 @@ impl AoCProject {
                             eprintln!("Cannot specify part without day!");
                         } else {
                             for d in days.iter() {
-                                run_day(d, None);
+                                if let Some(input) = inputs.get(&d.day()) {
+                                    run_day(d, None, input);
+                                } else {
+                                    eprintln!("Input not found for day {}", d.day());
+                                }
                             }
                         }
                     }
                     Some(selected_day) => {
-                        if let Some(day) = days.iter().find(|d| d.day() == selected_day) {
-                            run_day(day, part);
+                        let mut input_opt = None;
+
+                        if let Some(path) = run_cmd.value_of("input_file") {
+                            input_opt = Some(std::fs::read_to_string(path).expect(""));
+                        }
+
+                        if input_opt == None {
+                            input_opt = inputs.get(&selected_day).map(|s| s.to_string());
+                        }
+
+                        if let Some(input) = input_opt {
+                            if let Some(day) = days.iter().find(|d| d.day() == selected_day) {
+                                run_day(day, part, input);
+                            } else {
+                                eprintln!("Implementation not found for day {}", selected_day);
+                            }
                         } else {
-                            eprintln!("Day not found!");
+                            eprintln!("Input not found for day {}", selected_day);
                         }
                     }
                 }
@@ -100,12 +121,12 @@ impl AoCProject {
 }
 
 #[allow(clippy::redundant_pattern_matching, clippy::borrowed_box)]
-pub fn run_day(day: &Box<dyn AoCDay>, part: Option<usize>) {
+pub fn run_day<S>(day: &Box<dyn AoCDay>, part: Option<usize>, input: S) where S: AsRef<str> + std::fmt::Display {
     match part {
         Some(p) => {
             let (expected, val) = match p {
-                1 => (day.expected().0, day.part1()),
-                2 => (day.expected().1, day.part2()),
+                1 => (day.expected().0, day.part1(input.as_ref())),
+                2 => (day.expected().1, day.part2(input.as_ref())),
                 _ => unreachable!(),
             };
 
@@ -119,8 +140,8 @@ pub fn run_day(day: &Box<dyn AoCDay>, part: Option<usize>) {
             );
         }
         None => {
-            let (status1, value1) = check_status(day.expected().0, day.part1());
-            let (status2, value2) = check_status(day.expected().1, day.part2());
+            let (status1, value1) = check_status(day.expected().0, day.part1(input.as_ref()));
+            let (status2, value2) = check_status(day.expected().1, day.part2(input.as_ref()));
             println!("Day {:02}, Part 1: {} {}", day.day(), status1, value1);
             println!("        Part 2: {} {}", status2, value2);
         }
