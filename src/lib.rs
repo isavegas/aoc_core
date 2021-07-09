@@ -6,6 +6,8 @@ pub use builder::generate_get_days;
 mod project;
 pub use project::AoCProject;
 
+pub mod parse;
+
 mod vec3;
 pub use vec3::Vec3;
 
