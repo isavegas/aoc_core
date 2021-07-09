@@ -9,10 +9,10 @@ use std::io;
 #[macro_export]
 macro_rules! bail {
     ($e:expr) => {
-        return Err(crate::ErrorWrapper::new($e));
+        return Err(aoc_core::ErrorWrapper::new($e));
     };
     ($fmt:expr, $($arg:tt)*) => {
-        return Err(crate::ErrorWrapper::new(format!($fmt, $($arg)*)));
+        return Err(aoc_core::ErrorWrapper::new(format!($fmt, $($arg)*)));
     };
 }
 
@@ -47,6 +47,7 @@ pub enum ErrorWrapper {
     ParsingError(String),
     Simple(String),
     Numbered(i32),
+    NotImplemented,
 }
 impl ErrorWrapper {
     pub fn new<S: Into<String>>(msg: S) -> ErrorWrapper {
