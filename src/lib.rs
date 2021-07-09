@@ -20,3 +20,8 @@ pub trait AoCDay {
     fn part2(&self) -> Result<String, ErrorWrapper>;
     fn expected(&self) -> (Option<&'static str>, Option<&'static str>);
 }
+
+// Useful for output
+pub fn block_char() -> char {
+    std::char::from_u32(9608).unwrap()
+}
