@@ -4,7 +4,7 @@ mod builder;
 pub use builder::{generate_get_days, generate_get_inputs};
 
 mod project;
-pub use project::AoCProject;
+pub use project::{AoCProject, run_day};
 
 pub mod parse;
 
