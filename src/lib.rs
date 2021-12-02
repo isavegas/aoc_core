@@ -6,7 +6,8 @@ pub use builder::{generate_get_days, generate_get_inputs};
 mod project;
 pub use project::{AoCProject, run_day};
 
-pub mod parse;
+mod parse;
+pub use parse::parse;
 
 mod vec3;
 pub use vec3::Vec3;

@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-pub fn numbers<N>(input: &str) -> Vec<N>
+pub fn parse<N>(input: &str) -> Vec<N>
 where
     N: FromStr,
 {

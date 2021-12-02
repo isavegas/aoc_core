@@ -1,6 +1,5 @@
 use crate::AoCDay;
 use std::collections::HashMap;
-//use clap::{clap_app, App, Arg, SubCommand};
 use clap::{clap_app, AppSettings};
 
 pub struct AoCProject {
@@ -44,6 +43,9 @@ impl AoCProject {
                 // TODO: (@arg stdin: --stdin -i "flag for providing input over stdin")
                 (@arg input_file: --("input-file") -f +takes_value "location of an input file")
             )
+            (@subcommand list =>
+                (about: "lists implemented days")
+            )
         )
         .get_matches();
 
@@ -77,7 +79,7 @@ impl AoCProject {
                     }
                 }
             }
-            
+
             if !err {
                 match day {
                     None => {
@@ -115,6 +117,10 @@ impl AoCProject {
                         }
                     }
                 }
+            }
+        } else if let Some(_list_cmd) = matches.subcommand_matches("list") {
+            for d in days.iter() {
+                println!("Day {:>1}", d.day());
             }
         }
     }

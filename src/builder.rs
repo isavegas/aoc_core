@@ -13,7 +13,7 @@ pub fn get_days() -> Vec<Box<dyn AoCDay>> {{
         {}
     ];
     // Enforce sorting by day at runtime
-    days.sort_by_key(|d| d.day());
+    days.sort_by_key(|d: &Box<dyn AoCDay>| d.day());
     days
 }}
 "#
@@ -61,7 +61,7 @@ pub fn generate_get_days() {
 
     let returns: String = days
         .iter()
-        .map(|d| format!("crate::day::{}::get_day(),\n", d))
+        .map(|d: &String| format!("crate::day::{}::get_day(),\n", d))
         .collect();
 
     f.write_all(format!(get_days_template!(), returns).as_bytes())
