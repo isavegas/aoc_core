@@ -7,7 +7,7 @@ mod project;
 pub use project::{AoCProject, run_day};
 
 mod parse;
-pub use parse::parse;
+pub use parse::{parse, parse_with};
 
 mod vec3;
 pub use vec3::Vec3;
