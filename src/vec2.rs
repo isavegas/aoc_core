@@ -1,5 +1,7 @@
+use crate::ErrorWrapper;
 use std::hash::{Hash, Hasher};
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, Sub, SubAssign};
+use std::str::FromStr;
 
 #[derive(Clone, Debug, Copy)]
 pub struct Vec2<T> {
@@ -8,8 +10,29 @@ pub struct Vec2<T> {
 }
 
 impl<T> Vec2<T> {
-    pub fn new(x: T, y: T) -> Vec2<T> {
-        Vec2 { x, y }
+    pub fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl <T: FromStr> FromStr for Vec2<T> {
+    type Err = ErrorWrapper;
+
+    fn from_str(str: &str) -> Result<Self, Self::Err> {
+        let mut parts = str.split(',');
+        let x = parts.next()
+            .ok_or_else(|| ErrorWrapper::Simple("Missing component".to_string()))?
+            .parse()
+            .map_err(|err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
+        let y = parts.next()
+            .ok_or_else(|| ErrorWrapper::Simple("Missing component".to_string()))?
+            .parse()
+            .map_err(|err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
+        if parts.next().is_some() {
+            Err(ErrorWrapper::ParsingError("Too many parts".to_string()))
+        } else {
+            Ok(Self { x, y })
+        }
     }
 }
 

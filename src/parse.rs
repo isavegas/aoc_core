@@ -17,10 +17,7 @@ where
         .collect()
 }
 
-pub fn parse_with<N>(input: &str, func: fn(&str) -> Result<N, ErrorWrapper>) -> Vec<N>
-where
-    N: FromStr,
-{
+pub fn parse_with<N>(input: &str, func: fn(&str) -> Result<N, ErrorWrapper>) -> Vec<N> {
     input
         .lines()
         .map(str::trim)
