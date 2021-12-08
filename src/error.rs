@@ -44,7 +44,7 @@ macro_rules! ensure {
 pub enum ErrorWrapper {
     IOError(io::Error),
     Wrapped(Box<dyn error::Error>),
-    ParsingError(String),
+    ParseError(String),
     Simple(String),
     Numbered(i32),
     NotImplemented,
@@ -61,12 +61,12 @@ impl From<io::Error> for ErrorWrapper {
 }
 impl From<std::num::ParseIntError> for ErrorWrapper {
     fn from(e: std::num::ParseIntError) -> Self {
-        ErrorWrapper::ParsingError(e.to_string())
+        ErrorWrapper::ParseError(e.to_string())
     }
 }
 impl From<std::num::ParseFloatError> for ErrorWrapper {
     fn from(e: std::num::ParseFloatError) -> Self {
-        ErrorWrapper::ParsingError(e.to_string())
+        ErrorWrapper::ParseError(e.to_string())
     }
 }
 impl From<Box<dyn error::Error>> for ErrorWrapper {

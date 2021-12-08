@@ -33,9 +33,6 @@ impl AoCProject {
             (about: format!("Solutions for Advent of Code {}", self.year).as_str())
             (setting: AppSettings::SubcommandRequiredElseHelp)
             (@arg verbose: --verbose -v ... "Sets the level of verbosity")
-            (@subcommand version =>
-                (about: "shows version number")
-            )
             (@subcommand run =>
                 (about: "executes requested solution(s)")
                 (@arg day: --day -d +takes_value "indicate a specific day")

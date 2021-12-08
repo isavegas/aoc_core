@@ -1,3 +1,4 @@
+#![feature(pattern)]
 #![feature(option_result_contains)]
 
 mod builder;
@@ -7,7 +8,7 @@ mod project;
 pub use project::{AoCProject, run_day};
 
 mod parse;
-pub use parse::{parse, parse_with};
+pub use parse::*;
 
 mod vec3;
 pub use vec3::Vec3;
