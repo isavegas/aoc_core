@@ -23,11 +23,11 @@ impl <T: FromStr> FromStr for Vec2<T> {
         let x = parts.next()
             .ok_or_else(|| ErrorWrapper::Simple("Missing component".to_string()))?
             .parse()
-            .map_err(|err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
+            .map_err(|_err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
         let y = parts.next()
             .ok_or_else(|| ErrorWrapper::Simple("Missing component".to_string()))?
             .parse()
-            .map_err(|err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
+            .map_err(|_err| ErrorWrapper::ParsingError("Invalid component".to_string()))?;
         if parts.next().is_some() {
             Err(ErrorWrapper::ParsingError("Too many parts".to_string()))
         } else {
