@@ -43,8 +43,18 @@ pub fn generate_get_days() {
             e.expect("Error occured while iterating $CARGO_MANIFEST_DIR/src/day")
                 .path()
         })
-        .filter(|e| e.is_file())
-        .filter(|e| e.extension().contains(&"rs"))
+        .filter(|e| {
+            if e.is_file() {
+                e.extension() == Some(std::ffi::OsStr::new("rs"))
+            } else if e.is_dir() {
+                let mut mod_file = e.clone();
+                mod_file.push("mod.rs");
+                mod_file.as_path().exists() && mod_file.as_path().is_file()
+            } else {
+                // It isn't a rust source file or a directory containing a mod.rs
+                false
+            }
+        })
         .map(|e| {
             e.file_stem()
                 .unwrap()
