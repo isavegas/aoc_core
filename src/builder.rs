@@ -8,6 +8,7 @@ macro_rules! get_days_template {
         r#"
 use aoc_core::AoCDay;
 
+#[allow(clippy::borrowed_box)]
 pub fn get_days() -> Vec<Box<dyn AoCDay>> {{
     let mut days = vec![
         {}

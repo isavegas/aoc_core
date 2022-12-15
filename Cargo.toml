@@ -2,6 +2,7 @@
 name = "aoc_core"
 version = "0.2.0"
 edition = "2021"
+include = ["src/**/*", "README.md"]
 
 [dependencies]
-clap = "2.33.3"
+clap = "2.34.0"
