@@ -36,9 +36,11 @@ pub fn get_inputs() -> HashMap<usize, &'static str> {{
 }
 
 pub fn generate_get_days() {
-    let in_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let days_path = Path::new(&in_dir).join("src/day/");
-    let days: Vec<String> = read_dir(days_path)
+    let mut buf = std::path::PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap().as_str());
+    buf.push("src");
+    buf.push("day");
+
+    let days: Vec<String> = read_dir(buf.as_path())
         .expect("Unable to access $CARGO_MANIFEST_DIR/src/day/")
         .map(|e| {
             e.expect("Error occured while iterating $CARGO_MANIFEST_DIR/src/day")
@@ -80,7 +82,6 @@ pub fn generate_get_days() {
 }
 
 pub fn generate_get_inputs() {
-    //let inputs_path = Path::new(&in_dir).join("src/input/");
     let mut buf = std::path::PathBuf::from(env::var("CARGO_MANIFEST_DIR").unwrap().as_str());
     buf.push("src");
     buf.push("input");
@@ -92,7 +93,7 @@ pub fn generate_get_inputs() {
                 .path()
         })
         .filter(|e| e.is_file())
-        .filter(|e| e.extension().as_ref().is_some_and(|x| x == &"text"))
+        .filter(|e| e.extension().as_ref().is_some_and(|x| x == &"txt"))
         .map(|e| {
             e.file_stem()
                 .unwrap()
