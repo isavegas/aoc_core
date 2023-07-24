@@ -74,6 +74,11 @@ impl From<Box<dyn error::Error>> for ErrorWrapper {
         ErrorWrapper::Wrapped(e)
     }
 }
+impl From<String> for ErrorWrapper {
+    fn from(e: String) -> Self {
+        ErrorWrapper::Simple(e)
+    }
+}
 impl From<&str> for ErrorWrapper {
     fn from(e: &str) -> Self {
         ErrorWrapper::Simple(e.to_string())
