@@ -1,5 +1,4 @@
 #![feature(pattern)]
-#![feature(option_result_contains)]
 
 mod builder;
 pub use builder::{generate_get_days, generate_get_inputs};

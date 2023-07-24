@@ -92,7 +92,7 @@ pub fn generate_get_inputs() {
                 .path()
         })
         .filter(|e| e.is_file())
-        .filter(|e| e.extension().contains(&"txt"))
+        .filter(|e| e.extension().as_ref().is_some_and(|x| x == &"txt"))
         .map(|e| {
             e.file_stem()
                 .unwrap()
